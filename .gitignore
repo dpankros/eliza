@@ -98,3 +98,4 @@ ton_nft_metadata/*
 
 ton_nft_images/
 ton_nft_images/*
+**/.claude/settings.local.json

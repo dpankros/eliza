@@ -36,10 +36,18 @@ export default defineConfig(({ mode }) => {
             sourcemap: false,
             cssCodeSplit: true,
         },
+        optimizeDeps: {
+            exclude: [
+                '@elizaos/core',
+                '@dpankros/plugin-enhanced-memory',
+                '@dpankros/plugin-psyche'
+            ]
+        },
         resolve: {
             alias: {
                 "@": "/src",
             },
+            dedupe: ['@elizaos/core', 'react', 'react-dom']
         },
     };
 });

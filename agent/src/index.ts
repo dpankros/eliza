@@ -364,6 +364,7 @@ async function handlePluginImporting(plugins: string[]) {
         const importedPlugins = await Promise.all(
             plugins.map(async (plugin) => {
                 try {
+                    elizaLogger.info(`Importing plugin: ${plugin}`);
                     const importedPlugin = await import(plugin);
                     const functionName =
                         plugin
@@ -376,8 +377,7 @@ async function handlePluginImporting(plugins: string[]) {
                     );
                 } catch (importError) {
                     elizaLogger.error(
-                        `Failed to import plugin: ${plugin}`,
-                        importError
+                        `Failed to import plugin: ${plugin}. ${importError} message: ${importError.message} cause: ${importError.cause} code: ${importError.code} path: ${importError.path}`,
                     );
                     return []; // Return null for failed imports
                 }
