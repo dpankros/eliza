@@ -16,61 +16,61 @@ REDIS_DB=1
 rc() { redis-cli -h "${REDIS_HOST:-localhost}" -p "${REDIS_PORT:-6379}" "$@"; }
 
 #echo "Clearing redis fiber catch-up keys..."
-#rc -n $REDIS_DB --scan --pattern "*fiber-creation-catchup*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*fiber-creation-catchup*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Clearing emotion tagging extension catch-up keys..."
-#rc -n $REDIS_DB --scan --pattern "*emotion_tagging_extension*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*emotion-tagging-catchup*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*emotion_tagging_extension*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*emotion-tagging-catchup*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 
 #echo "Removing cached self-concepts..."
-#rc -n $REDIS_DB --scan --pattern "*self_concept*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*self_concept*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Removing cached psyches..."
-#rc -n $REDIS_DB --scan --pattern "*psyche*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*psyche_baseline*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*psyche*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*psyche_baseline*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Removing cached personality traits..."
-#rc -n $REDIS_DB --scan --pattern "*personality_traits*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*personality_traits*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Removing fiber catch-up queues..."
-#rc -n $REDIS_DB --scan --pattern "*q_fiber_created*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*q_fiber_updated*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*q_fiber_created*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*q_fiber_updated*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Removing thread catch-up queues..."
-#rc -n $REDIS_DB --scan --pattern "*q_thread_created*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*q_thread_updated*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "*q_thread_created*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*q_thread_updated*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Removing other catch up queues..."
-#rc -n $REDIS_DB --scan --pattern "*summarization-*-catchup*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*keyword-*-catchup*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*keyword-refinement-*-catchup*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "*generation-*-embedding-catchup*" | xargs rc -n $REDIS_DB  DEL
+#rc -n $REDIS_DB --scan --pattern "*summarization-*-catchup*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*keyword-*-catchup*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*keyword-refinement-*-catchup*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "*generation-*-embedding-catchup*" | while IFS= read -r k; do rc -n $REDIS_DB  DEL "$k"; done
 #
 #echo "Removing catch-up job metadata"
-#rc -n $REDIS_DB --scan --pattern "_cap:catchUp:*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "_cap:catchUp:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 #
 #echo "Removing Worker queue state (dedup entries, meta)"
-#rc -n $REDIS_DB --scan --pattern "_cap:workerQueue:*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "_cap:queue:*" | xargs rc -n $REDIS_DB DEL
-#rc -n $REDIS_DB --scan --pattern "_queue:*" | xargs rc -n $REDIS_DB DEL
+#rc -n $REDIS_DB --scan --pattern "_cap:workerQueue:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "_cap:queue:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+#rc -n $REDIS_DB --scan --pattern "_queue:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 
 #skip this for now
 echo "Removing sleep sessions"
-rc -n $REDIS_DB --scan --pattern "catchup:session:*" | xargs rc -n $REDIS_DB DEL
-rc -n $REDIS_DB --scan --pattern 'nightly:in_flight:*' | xargs rc -n $REDIS_DB DEL
+rc -n $REDIS_DB --scan --pattern "catchup:session:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+rc -n $REDIS_DB --scan --pattern 'nightly:in_flight:*' | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 
 echo "Removing property locks (stale from crashed processes)"
-rc -n $REDIS_DB --scan --pattern "*:readers:lock:*" | xargs rc -n $REDIS_DB DEL
+rc -n $REDIS_DB --scan --pattern "*:readers:lock:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 
 echo "Removing stale RPC response streams (dead instances)"
-rc -n $REDIS_DB --scan --pattern "function:responses:service:*" | xargs rc -n $REDIS_DB DEL
-rc -n $REDIS_DB --scan --pattern "streaming:chunks:service:*" | xargs rc -n $REDIS_DB DEL
+rc -n $REDIS_DB --scan --pattern "function:responses:service:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
+rc -n $REDIS_DB --scan --pattern "streaming:chunks:service:*" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 
 echo "Removing cached templates "
 rc -n $REDIS_DB DEL  "fnd:generation:template:templates"
 
 echo "Removing dead letter queue"
-rc -n $REDIS_DB --scan --pattern "_sys:dlq" | xargs rc -n $REDIS_DB DEL
+rc -n $REDIS_DB --scan --pattern "_sys:dlq" | while IFS= read -r k; do rc -n $REDIS_DB DEL "$k"; done
 
 #nuclear option
 #echo "Clearing all plugin Redis state..."
