@@ -1,7 +1,7 @@
 {
     "name": "Ted",
     "plugins": [
-        "@dpankros/plugin-enhanced-memory"
+        "@empathic-engines/plugin-enhanced-memory"
     ],
     "pluginsDisabled": [
         "@dpankros/plugin-psyche"],

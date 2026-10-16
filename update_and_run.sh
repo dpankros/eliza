@@ -148,6 +148,6 @@ pkill -f "node.*eliza" || true
 sleep 2 # make sure copy is done and everything is dead first
 
 #pnpm install --force
-pnpm install --filter @dpankros/plugin-enhanced-memory --force
+pnpm install --filter @empathic-engines/plugin-enhanced-memory --force
 
 NODE_OPTIONS="--max-old-space-size=4096" pnpm start --characters='/Users/dpankros/Developer/dpankros_plugin-enhanced-memory/characters/ted/test.character.json,/Users/dpankros/Developer/dpankros_plugin-enhanced-memory/characters/britney/britney.character.json'

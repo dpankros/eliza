@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => {
         optimizeDeps: {
             exclude: [
                 '@elizaos/core',
-                '@dpankros/plugin-enhanced-memory',
+                '@empathic-engines/plugin-enhanced-memory',
                 '@dpankros/plugin-psyche'
             ]
         },
