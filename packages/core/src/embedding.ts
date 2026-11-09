@@ -91,6 +91,7 @@ async function getRemoteEmbedding(
         body: JSON.stringify({
             input,
             model: options.model,
+            encoding_format: "float",
             dimensions:
                 options.dimensions ||
                 options.length ||
